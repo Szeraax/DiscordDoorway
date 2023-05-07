@@ -255,7 +255,7 @@ namespace Discord.Doorway
                     {
                         throw new NullReferenceException();
                     }
-                    cannedResponse = JsonSerializer.Serialize(ccs.content);
+                    cannedResponse = ccs.content;
                 }
                 catch { }
             }

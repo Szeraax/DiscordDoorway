@@ -18,4 +18,6 @@ You can place a simple text field in the value to be a static response. You can 
 
 You can also place a simple message or embed JSON within a JSON content property and also optionally set the `private` or `passthru` true/false properties. Setting private to true sets the response to be only visible to the submitter. Setting passthru makes the function pass the original interaction to the queue (instead of skipping because of the canned command). Some examples:
 
-`{"private":true,"content":{"title":"My Site","url":"https://www.reddit.com"}`
+`{"private":true,"content":{"title":"My Site","url":"https://www.reddit.com"}}`
+
+`{"passthru":true,"content":"Thanks for submitting your request! I'll check this out later."}`
