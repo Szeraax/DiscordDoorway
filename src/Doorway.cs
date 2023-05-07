@@ -207,11 +207,15 @@ namespace Discord.Doorway
             r.data = new responseData();
             r.type = 4;
             // standard canned command properties should get applied to the response as needed
+            bool passthru = false;
             try
             {
+                _logger.LogInformation("Trying to parse");
                 CannedCommand? cc = JsonSerializer.Deserialize<CannedCommand>(cannedResponse);
                 if (null == cc)
                 {
+                    Thread.Sleep(300);
+                    _logger.LogInformation("Failed to get any data out");
                     throw new NullReferenceException();
                 }
                 if (cc.@private == true)
@@ -222,7 +226,7 @@ namespace Discord.Doorway
                 if (cc.passthru == true)
                 {
                     _logger.LogInformation("Doing passthru");
-                    r.type = 5;
+                    passthru = true;
                 }
             }
             catch
@@ -280,10 +284,11 @@ namespace Discord.Doorway
             }
             httpresponse.WriteString(JsonSerializer.Serialize(r));
 
-            if (r.type == 4)
+            if (r.type == 5 || passthru)
             {
                 return new MultiOutputBinding()
                 {
+                    QueueBody = text,
                     HttpReponse = httpresponse
                 };
             }
@@ -291,7 +296,6 @@ namespace Discord.Doorway
             {
                 return new MultiOutputBinding()
                 {
-                    QueueBody = text,
                     HttpReponse = httpresponse
                 };
             }
