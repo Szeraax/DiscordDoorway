@@ -1,5 +1,8 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Discord.Doorway.Lib
 {
