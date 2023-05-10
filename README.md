@@ -21,3 +21,23 @@ You can also place a simple message or embed JSON within a JSON content property
 `{"private":true,"content":{"title":"My Site","url":"https://www.reddit.com"}}`
 
 `{"passthru":true,"content":"Thanks for submitting your request! I'll check this out later."}`
+
+## Adding Downstream Discord Bots
+
+Once you have this function up and running, you may want to add actual discord bots that do more than just reply with static responses. You can do that by creating another Azure Function that will consume the data that comes into the bot's storage queue.
+
+To do this, you need to add a appsetting in your new azure function that contains the storage credentials for your function to access this function's storage account. I like to create one called `AzureWebJobs_Doorway` and paste the doorway storage connection string into there.
+
+Next, you should have your function set to trigger based on queue items and set the queue name to the same ID as your discord bot's application ID.
+
+Finally, you should consider how often you want your new Azure Function to check the storage queue for new items. That's done in your host config. For PowerShell runtime, we use the binding storage extensions like this in our host.json:
+
+```json
+"extensions": {
+    "queues": {
+      "maxPollingInterval": "00:00:05",
+      "visibilityTimeout": "00:00:05",
+      "maxDequeueCount": 3
+    }
+  }
+```
